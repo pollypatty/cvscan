@@ -36,6 +36,7 @@ func (c *ConfigScoreChecklistItem) UnmarshalJSON(data []byte) error {
 
 func (c *ConfigScoreChecklistItem) MarshalJSON() ([]byte, error) {
 	var w *float64
+	//sets default weight as 1
 	if c.Weight != 1 {
 		w = &c.Weight
 	}
@@ -52,11 +53,16 @@ type ConfigView struct {
 	ScoreChecklist map[string]ConfigScoreChecklistItem `json:"score_checklist"`
 }
 
+//structs are equiv of pythoin classes
+//views and apikey map to the json code
 type Config struct {
+	//viwes is a dictionary with string type keys and values of configview(which is another class)
 	Views  map[string]ConfigView `json:"views"`
+	//api key is a string and the json bit states when we convert to and from json as APIKey and api_key
 	APIKey string                `json:"api_key"`
 }
 
+//this returns a tuple and an error if it goes wrong (in Go errors are variable types)
 func LoadConfig() (Config, error) {
 	f, err := os.Open("./config.json")
 	if err != nil {

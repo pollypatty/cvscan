@@ -6,6 +6,7 @@ import (
 	"github.com/ledongthuc/pdf"
 )
 
+//extracts the text from the pdf
 func GetTextFromPDFFile(file string) (string, error) {
 	f, r, err := pdf.Open(file)
 	if err != nil {

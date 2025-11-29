@@ -24,6 +24,7 @@ const (
 	Inconsistency
 )
 
+//helper func that calls the func below cos the func below only works on open files
 func WriteCandidateReportsAsCSVFile(filename string, reports []CandidateReport, mode ReportMode) error {
 	f, err := os.Create(filename)
 	if err != nil {
@@ -33,10 +34,11 @@ func WriteCandidateReportsAsCSVFile(filename string, reports []CandidateReport, 
 	return WriteCandidateReportsAsCSV(f, reports, mode)
 }
 
+//creayes a new csv writer which lets us write a csv
 func WriteCandidateReportsAsCSV(w io.Writer, reports []CandidateReport, mode ReportMode) error {
 	cw := csv.NewWriter(w)
 
-	// Collect all checklist keys
+	//Collect all checklist keys
 	keySet := make(map[string]struct{})
 	for _, r := range reports {
 		for k := range r.Checklist {
@@ -44,14 +46,14 @@ func WriteCandidateReportsAsCSV(w io.Writer, reports []CandidateReport, mode Rep
 		}
 	}
 
-	// Sort keys alphabetically
+	//Sort keys alphabetically
 	keys := make([]string, 0, len(keySet))
 	for k := range keySet {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
-	// Build header
+	//Build header
 	header := []string{"FileName", "FileLoc"}
 	header = append(header, keys...)
 	header = append(header, "FinalScore")
